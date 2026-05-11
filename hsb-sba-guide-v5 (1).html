@@ -1,0 +1,1248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HSB SBA Guide — CUC Secondary</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #1a1a1a; font-size: 15px; line-height: 1.6; }
+
+  /* ── LANDING PAGE ── */
+  #landing { display: block; }
+  #app     { display: none; }
+
+  .land-hero { background: #0f6e56; color: #fff; padding: 40px 20px 32px; text-align: center; }
+  .land-hero-label { font-size: 11px; letter-spacing: 0.12em; opacity: 0.7; margin-bottom: 10px; text-transform: uppercase; }
+  .land-hero h1 { font-size: 28px; font-weight: 700; margin-bottom: 8px; line-height: 1.2; }
+  .land-hero p { font-size: 15px; opacity: 0.85; max-width: 360px; margin: 0 auto; line-height: 1.5; }
+
+  .land-body { padding: 20px 16px 32px; max-width: 500px; margin: 0 auto; }
+
+  .land-action { background: #fff; border-radius: 14px; border: 1px solid #e8e5de; padding: 18px 18px 14px; margin-bottom: 14px; }
+  .land-action-num { display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; font-size: 13px; font-weight: 700; flex-shrink: 0; margin-bottom: 10px; }
+  .land-action h2 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+  .land-action p { font-size: 13px; color: #555; line-height: 1.5; margin-bottom: 14px; }
+
+  .submit-box-land { background: #0f6e56; color: #fff; border-radius: 10px; padding: 14px 16px; margin-bottom: 0; }
+  .submit-email { font-size: 15px; font-weight: 700; font-family: 'Courier New', monospace; background: rgba(255,255,255,0.15); padding: 6px 10px; border-radius: 6px; margin: 6px 0; display: block; text-align: center; }
+  .submit-label { font-size: 11px; opacity: 0.8; margin-bottom: 4px; letter-spacing: 0.05em; }
+  .submit-instruction { font-size: 13px; line-height: 1.55; }
+
+  .land-btn { display: block; width: 100%; background: #0f6e56; color: #fff; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; text-align: center; margin-top: 6px; }
+  .land-btn:active { opacity: 0.88; }
+
+  .land-step-row { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
+  .land-step-num { width: 24px; height: 24px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 700; flex-shrink: 0; }
+
+  /* ── HEADER ── */
+  .header { background: #0f6e56; color: #fff; padding: 20px 16px 16px; }
+  .header-top { display: flex; align-items: center; gap: 10px; margin-bottom: 4px; }
+  .header-back { background: rgba(255,255,255,0.15); border: none; color: #fff; border-radius: 8px; padding: 6px 12px; font-size: 13px; font-weight: 600; cursor: pointer; flex-shrink: 0; }
+  .header-label { font-size: 11px; letter-spacing: 0.1em; opacity: 0.7; }
+  .header h1 { font-size: 20px; font-weight: 600; margin-bottom: 2px; }
+  .header p { font-size: 13px; opacity: 0.8; }
+
+  /* ── TAB NAV ── */
+  .toc { background: #fff; border-bottom: 1px solid #e0ddd6; position: sticky; top: 0; z-index: 10; }
+  .toc-inner { display: flex; overflow-x: auto; gap: 0; scrollbar-width: none; }
+  .toc-inner::-webkit-scrollbar { display: none; }
+  .toc-btn { flex-shrink: 0; padding: 11px 12px; font-size: 12px; font-weight: 600; color: #555; border: none; background: none; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; }
+  .toc-btn:hover { color: #0f6e56; }
+  .toc-btn.active { color: #0f6e56; border-bottom-color: #0f6e56; }
+
+  /* ── TABS ── */
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* ── SHARED COMPONENTS ── */
+  .sec-header { padding: 14px 16px 12px; }
+  .sec-part { font-size: 11px; letter-spacing: 0.08em; opacity: 0.8; margin-bottom: 3px; }
+  .sec-title { font-size: 19px; font-weight: 700; }
+  .sec-body { padding: 0 16px 24px; }
+  .card { background: #fff; border-radius: 12px; padding: 14px 16px; margin-bottom: 10px; border: 1px solid #e8e5de; }
+  .card-title { font-size: 14px; font-weight: 700; margin-bottom: 8px; color: #1a1a1a; }
+  .step-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 10px; }
+  .step-circle { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 600; flex-shrink: 0; margin-top: 1px; }
+  .check { color: #1D9E75; font-weight: 700; margin-right: 6px; }
+  .cross { color: #D85A30; font-weight: 700; margin-right: 6px; }
+  .tip { border-radius: 8px; padding: 10px 12px; margin-top: 8px; }
+  .warning-box { background: #FAEEDA; border-left: 3px solid #BA7517; border-radius: 0 8px 8px 0; padding: 10px 12px; }
+  .storage-warning { background: #FAECE7; border-left: 3px solid #D85A30; border-radius: 0 8px 8px 0; padding: 12px 14px; margin-bottom: 12px; }
+  .passive-box { background: #EEEDFE; border-radius: 8px; padding: 10px 12px; margin: 8px 0; font-size: 13px; color: #26215C; }
+  .passive-row { display: flex; gap: 10px; margin-bottom: 6px; align-items: flex-start; }
+  .passive-label { font-size: 10px; font-weight: 700; padding: 2px 6px; border-radius: 4px; flex-shrink: 0; margin-top: 1px; }
+  .name-box { background: #eeedfe; border: 1px solid #afa9ec; border-radius: 8px; padding: 12px 16px; margin-bottom: 12px; }
+  .name-box-label { font-size: 11px; color: #534AB7; margin-bottom: 4px; font-weight: 600; letter-spacing: 0.05em; }
+  .name-box-value { font-size: 15px; font-weight: 700; color: #26215C; font-family: 'Courier New', monospace; }
+  .name-box-eg { font-size: 11px; color: #534AB7; margin-top: 4px; }
+  .marks-badge { display: inline-flex; align-items: center; justify-content: center; background: #185FA5; color: #fff; font-size: 11px; font-weight: 700; border-radius: 20px; padding: 2px 9px; margin-left: 6px; letter-spacing: 0.03em; flex-shrink: 0; }
+
+  /* ── SUBMIT BOX (in-guide) ── */
+  .submit-box { background: #C47D00; color: #fff; border-radius: 12px; padding: 16px 18px; margin-bottom: 12px; border: 2px solid #A36700; }
+  .submit-box .submit-email { font-size: 16px; font-weight: 700; font-family: 'Courier New', monospace; background: rgba(255,255,255,0.2); padding: 8px 12px; border-radius: 8px; margin: 8px 0; display: block; text-align: center; letter-spacing: 0.02em; }
+  .submit-box .submit-title { font-size: 16px; font-weight: 800; margin-bottom: 4px; letter-spacing: 0.01em; }
+  .submit-box .submit-sub { font-size: 13px; opacity: 0.9; line-height: 1.55; margin-bottom: 4px; }
+
+  /* ── PAGE CARDS (layout tab) ── */
+  .page-card { background: #fff; border-radius: 10px; padding: 12px 14px; margin-bottom: 8px; border: 1px solid #e8e5de; }
+  .page-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px; }
+  .page-badge { display: inline-block; font-size: 11px; font-weight: 600; padding: 3px 9px; border-radius: 20px; flex-shrink: 0; }
+  .page-name { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+  .page-body { font-size: 13px; color: #555; line-height: 1.55; }
+  .page-note { font-size: 11px; font-style: italic; margin-top: 5px; }
+  .page-requirement { background: #FAECE7; border-radius: 6px; padding: 7px 10px; margin-top: 7px; font-size: 12px; color: #712B13; }
+  .req-label { font-weight: 700; margin-bottom: 2px; font-size: 11px; }
+
+  /* ── ACCORDION (mark scheme) ── */
+  .accordion-wrap { margin-top: 8px; }
+  .accordion-btn { width: 100%; background: #E6F1FB; border: 1px solid #b3cfe8; border-radius: 8px; padding: 8px 12px; text-align: left; font-size: 12px; font-weight: 700; color: #0C447C; cursor: pointer; display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+  .accordion-btn:hover { background: #d4e8f8; }
+  .accordion-arrow { transition: transform 0.2s; font-style: normal; }
+  .accordion-panel { display: none; background: #f0f7ff; border: 1px solid #b3cfe8; border-top: none; border-radius: 0 0 8px 8px; padding: 10px 12px; }
+  .accordion-panel.open { display: block; }
+  .acc-row { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px solid #cce0f5; font-size: 12px; color: #1a1a1a; }
+  .acc-row:last-child { border-bottom: none; }
+  .acc-pts { font-weight: 700; color: #185FA5; min-width: 22px; text-align: right; }
+
+  /* ── MARK SCHEME TOTAL CARD ── */
+  .mark-scheme-card { background: #E6F1FB; border: 1px solid #b3cfe8; border-radius: 10px; padding: 14px 16px; margin-bottom: 10px; }
+  .mark-row { display: flex; justify-content: space-between; align-items: center; padding: 7px 0; border-bottom: 1px solid #cce0f5; font-size: 13px; }
+  .mark-row:last-child { border-bottom: none; }
+  .mark-section { color: #0C447C; font-weight: 500; }
+  .mark-pts { font-weight: 700; color: #185FA5; font-size: 14px; min-width: 28px; text-align: right; }
+
+  /* ── ANALYSIS TAB ── */
+  .formula-card { background: #fff; border-radius: 10px; padding: 14px 16px; margin-bottom: 8px; border-left: 4px solid #3B6D11; border-top: 1px solid #e8e5de; border-right: 1px solid #e8e5de; border-bottom: 1px solid #e8e5de; }
+  .formula-step-num { font-size: 11px; font-weight: 700; color: #3B6D11; letter-spacing: 0.05em; margin-bottom: 4px; }
+  .formula-title { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 5px; }
+  .formula-desc { font-size: 13px; color: #555; margin-bottom: 8px; }
+  .example-box { background: #eaf3de; border-radius: 6px; padding: 8px 10px; font-size: 13px; color: #27500A; font-style: italic; line-height: 1.5; }
+  .starter-pill { background: #f5f4f0; border-radius: 6px; padding: 6px 10px; font-size: 13px; color: #333; margin-bottom: 6px; display: block; }
+  .analysis-vs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .av-card { border-radius: 8px; padding: 10px; font-size: 12px; line-height: 1.5; }
+  .colour-key { display: flex; flex-wrap: wrap; gap: 8px; margin: 12px 0 16px; }
+  .colour-key-item { display: flex; align-items: center; gap: 6px; font-size: 13px; font-weight: 500; }
+  .colour-dot { width: 14px; height: 14px; border-radius: 50%; flex-shrink: 0; }
+
+  /* ── EMBEDDED EXAMPLE TAB ── */
+  .mode-bar-inner { background: #fff; border-bottom: 1px solid #e0ddd6; display: flex; }
+  .mode-btn { flex: 1; padding: 13px 10px; font-size: 13px; font-weight: 600; border: none; background: none; cursor: pointer; color: #888; border-bottom: 3px solid transparent; }
+  .mode-btn.active { color: #3B6D11; border-bottom-color: #3B6D11; }
+  .how-to-use { background: #EAF3DE; border: 1px solid #C0DD97; border-radius: 10px; margin: 14px 16px 4px; padding: 12px 14px; font-size: 13px; color: #27500A; line-height: 1.6; }
+  .doc-frame { background: #fff; border-radius: 12px; margin: 14px 16px; border: 1px solid #e8e5de; overflow: hidden; }
+  .doc-heading { background: #f9f8f6; border-bottom: 1px solid #e8e5de; padding: 10px 16px; }
+  .doc-heading-text { font-size: 12px; font-weight: 700; color: #555; letter-spacing: 0.06em; }
+  .doc-body { padding: 18px 16px; }
+  .ex-section-heading { font-size: 15px; font-weight: 700; color: #1a1a1a; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 2px solid #1a1a1a; padding-bottom: 5px; }
+  .ex-para { font-size: 14px; color: #1a1a1a; line-height: 1.95; margin-bottom: 16px; }
+  .ex-para:last-child { margin-bottom: 0; }
+  .para-label { font-size: 10px; font-weight: 700; letter-spacing: 0.09em; color: #3B6D11; margin-bottom: 5px; display: none; }
+  .annotate-mode .para-label { display: block; }
+  .ann { display: inline; border-radius: 2px; padding: 1px 2px; }
+  .read-mode .ann { background: none !important; border-bottom: none !important; cursor: default; }
+  .annotate-mode .ann { cursor: pointer; }
+  .annotate-mode .ann-step1 { background: #dbeafe; border-bottom: 2px solid #378ADD; }
+  .annotate-mode .ann-step2 { background: #dcfce7; border-bottom: 2px solid #639922; }
+  .annotate-mode .ann-step3 { background: #fef9c3; border-bottom: 2px solid #EF9F27; }
+  .annotate-mode .ann-step4 { background: #fce7f3; border-bottom: 2px solid #D4537E; }
+  .annotate-mode .ann-missing { background: #fee2e2; border-bottom: 2px dashed #E24B4A; }
+  .ann-panel { border-radius: 8px; padding: 11px 13px; font-size: 13px; line-height: 1.55; margin: 6px 0 10px; display: none; }
+  .ann-panel.visible { display: block; }
+  .ann-panel.blue { background: #dbeafe; color: #0C447C; border-left: 3px solid #378ADD; }
+  .ann-panel.green { background: #dcfce7; color: #166534; border-left: 3px solid #639922; }
+  .ann-panel.yellow { background: #fef9c3; color: #713f12; border-left: 3px solid #EF9F27; }
+  .ann-panel.pink { background: #fce7f3; color: #831843; border-left: 3px solid #D4537E; }
+  .ann-panel.red { background: #fee2e2; color: #7f1d1d; border-left: 3px solid #E24B4A; }
+  .ann-label { font-weight: 700; font-size: 10px; margin-bottom: 4px; letter-spacing: 0.06em; }
+  .improve-box { background: #FAEEDA; border-left: 3px solid #BA7517; border-radius: 0 8px 8px 0; padding: 10px 13px; margin: 4px 0 16px; font-size: 13px; color: #633806; display: none; }
+  .improve-label { font-weight: 700; font-size: 10px; margin-bottom: 4px; color: #854F0B; letter-spacing: 0.06em; }
+  .annotate-mode .improve-box { display: block; }
+  .ex-key { display: none; flex-wrap: wrap; gap: 8px; margin: 12px 16px 4px; }
+  .annotate-mode-outer .ex-key { display: flex; }
+  .key-item { display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 500; }
+  .key-dot { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+  .tap-hint { font-size: 12px; color: #888; font-style: italic; text-align: center; padding: 6px 16px 10px; display: none; }
+  .annotate-mode-outer .tap-hint { display: block; }
+  .overall-section { margin: 0 16px 16px; display: none; }
+  .annotate-mode-outer .overall-section { display: block; }
+  .overall-card { background: #fff; border-radius: 12px; padding: 14px 16px; border: 1px solid #e8e5de; margin-bottom: 10px; }
+  .overall-title { font-size: 14px; font-weight: 700; margin-bottom: 10px; color: #1a1a1a; }
+  .strength-row { display: flex; gap: 8px; align-items: flex-start; margin-bottom: 7px; font-size: 13px; color: #444; }
+  .tip-badge { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; flex-shrink: 0; font-weight: 700; margin-top: 1px; }
+  .read-cta { background: #3B6D11; color: #fff; border-radius: 10px; margin: 14px 16px; padding: 14px 16px; display: none; }
+  .read-mode-outer .read-cta { display: block; }
+  .para-section-label { font-size: 11px; font-weight: 700; letter-spacing: 0.08em; color: #fff; background: #3B6D11; border-radius: 4px; padding: 3px 8px; display: none; margin-bottom: 8px; }
+  .annotate-mode .para-section-label { display: inline-block; }
+
+  /* ── DEVICE TABS ── */
+  .device-tabs { display: flex; gap: 0; margin-bottom: 12px; border: 1px solid #e8e5de; border-radius: 8px; overflow: hidden; }
+  .device-tab { flex: 1; padding: 9px 10px; font-size: 12px; font-weight: 600; text-align: center; cursor: pointer; background: #f5f4f0; color: #555; border: none; }
+  .device-tab.active { background: #0f6e56; color: #fff; }
+  .device-content { display: none; }
+  .device-content.active { display: block; }
+
+  /* ── TABLE ── */
+  table.cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; border-radius: 10px; overflow: hidden; }
+  table.cmp-table th { padding: 9px 10px; text-align: left; font-weight: 600; font-size: 12px; }
+  table.cmp-table td { padding: 8px 10px; border-top: 1px solid #eee; vertical-align: top; font-size: 13px; }
+
+  /* ── SECTION COLOURS ── */
+  .tab1 .sec-header { background: #0f6e56; color: #fff; }
+  .tab2 .sec-header { background: #3C3489; color: #fff; }
+  .tab3 .sec-header { background: #993C1D; color: #fff; }
+  .tab4 .sec-header { background: #185FA5; color: #fff; }
+  .tab5 .sec-header { background: #3B6D11; color: #fff; }
+  .tab6 .sec-header { background: #3B6D11; color: #fff; }
+
+  @media (max-width: 400px) { body { font-size: 14px; } .land-hero h1 { font-size: 24px; } }
+  @media (min-width: 700px) {
+    body { font-size: 16px; max-width: 860px; margin: 0 auto; box-shadow: 0 0 40px rgba(0,0,0,0.08); min-height: 100vh; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════
+     LANDING PAGE
+════════════════════════════════════════ -->
+<div id="landing">
+  <div class="land-hero">
+    <div class="land-hero-label">CSEC Human &amp; Social Biology · CUC Secondary · 2026</div>
+    <h1>Your HSB SBA<br>— Step by Step</h1>
+    <p style="margin-top:10px;">Everything you need to write, format, and submit your SBA. Start here.</p>
+  </div>
+
+  <div class="land-body">
+
+    <!-- STEP 0: SUBMIT FIRST -->
+    <div class="land-action">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="land-action-num" style="background:#C47D00;color:#fff;">!</div>
+        <h2 style="margin-bottom:0;">Do this first — before anything else</h2>
+      </div>
+      <div class="submit-box-land">
+        <div class="submit-title" style="font-size:15px;font-weight:800;margin-bottom:6px;">SUBMIT YOUR SBA NOW</div>
+        <div class="submit-instruction">Submitting means sharing your Google Doc with your teacher. Do it the moment you create your document — even if it is completely empty. Once shared, he can see every edit you make from that point on.</div>
+        <span class="submit-email">legall.ev@gmail.com</span>
+        <div style="font-size:12px;opacity:0.85;margin-top:4px;">Share → set permission to <strong>Editor</strong> → Send. That is it.</div>
+      </div>
+    </div>
+
+    <!-- WHAT THIS GUIDE IS -->
+    <div class="land-action">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
+        <div class="land-action-num" style="background:#0f6e56;color:#fff;">?</div>
+        <h2 style="margin-bottom:0;">What is in this guide?</h2>
+      </div>
+      <p>Six steps, in order. Work through them one at a time. You do not need to do it all in one sitting.</p>
+      <div style="display:flex;flex-direction:column;gap:8px;margin-top:4px;">
+        <div class="land-step-row" style="background:#E1F5EE;border-radius:8px;padding:10px 12px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#0f6e56;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">1</div>
+          <div style="font-size:13px;color:#085041;"><strong>Set Up Google Docs</strong> — get the app and create your account</div>
+        </div>
+        <div class="land-step-row" style="background:#EEEDFE;border-radius:8px;padding:10px 12px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#3C3489;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">2</div>
+          <div style="font-size:13px;color:#26215C;"><strong>Name &amp; Share Your File</strong> — create your document and submit it</div>
+        </div>
+        <div class="land-step-row" style="background:#FAECE7;border-radius:8px;padding:10px 12px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#993C1D;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">3</div>
+          <div style="font-size:13px;color:#712B13;"><strong>What You Already Have</strong> — turning group work into your own SBA</div>
+        </div>
+        <div class="land-step-row" style="background:#E6F1FB;border-radius:8px;padding:10px 12px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#185FA5;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">4</div>
+          <div style="font-size:13px;color:#0C447C;"><strong>Build Your SBA</strong> — the layout, every section, and the mark scheme</div>
+        </div>
+        <div class="land-step-row" style="background:#EAF3DE;border-radius:8px;padding:10px 12px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#3B6D11;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">5</div>
+          <div style="font-size:13px;color:#27500A;"><strong>Write Your Analysis</strong> — the formula, step by step</div>
+        </div>
+        <div class="land-step-row" style="background:#EAF3DE;border-radius:8px;padding:10px 12px;">
+          <div style="width:22px;height:22px;border-radius:50%;background:#3B6D11;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;">6</div>
+          <div style="font-size:13px;color:#27500A;"><strong>See a Real Example</strong> — read a full worked analysis before you write yours</div>
+        </div>
+      </div>
+      <button class="land-btn" onclick="openApp()" style="margin-top:16px;">Open the Guide →</button>
+    </div>
+
+    <div style="text-align:center;font-size:12px;color:#999;padding-bottom:16px;">Caribbean Union College Secondary School · HSB SBA 2026</div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════
+     MAIN APP
+════════════════════════════════════════ -->
+<div id="app">
+
+<div class="header">
+  <div class="header-top">
+    <button class="header-back" onclick="goBack()">← Home</button>
+    <div class="header-label">CSEC HSB · CUC SECONDARY · 2026</div>
+  </div>
+  <h1>Your SBA — Step by Step</h1>
+</div>
+
+<div class="toc">
+  <div class="toc-inner">
+    <button class="toc-btn active" onclick="showTab(1)">Step 1: Google Docs</button>
+    <button class="toc-btn" onclick="showTab(2)">Step 2: Your File</button>
+    <button class="toc-btn" onclick="showTab(3)">Step 3: Group → You</button>
+    <button class="toc-btn" onclick="showTab(4)">Step 4: Build Your SBA</button>
+    <button class="toc-btn" onclick="showTab(5)">Step 5: Write Analysis</button>
+    <button class="toc-btn" onclick="showTab(6)">Step 6: Real Example</button>
+  </div>
+</div>
+
+
+<!-- ── TAB 1: Google Docs ── -->
+<div id="tab1" class="tab-panel active tab1">
+  <div class="sec-header">
+    <div class="sec-part">STEP 1 OF 6</div>
+    <div class="sec-title">Set Up Google Docs</div>
+  </div>
+  <div class="sec-body">
+    <p style="color:#444;margin-bottom:12px;font-size:14px;">Think of it as Word — but it lives on the internet. No USB drive. No "I lost the file." Opens from your phone, a friend's laptop, or any computer.</p>
+
+    <div class="card">
+      <div class="card-title">Why it beats Word for this assignment</div>
+      <div style="font-size:13px;color:#444;line-height:1.9;">
+        <div><span class="check">✓</span>Opens on your phone — no laptop needed</div>
+        <div><span class="check">✓</span>Saves automatically as you type — you cannot lose your work</div>
+        <div><span class="check">✓</span>Your teacher sees it the moment it is shared — no emails, no USBs</div>
+        <div><span class="check">✓</span>You can work on it from any device, anywhere</div>
+        <div><span class="check">✓</span>If your phone breaks, your work is still safe online</div>
+        <div style="margin-top:6px;"><span class="cross">✗</span>Sending a Word file by email = wrong version problems. Avoid.</div>
+        <div><span class="cross">✗</span>WhatsApp documents get overwritten or lost. Not for submissions.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Get Google Docs on your phone</div>
+      <div class="step-row">
+        <div class="step-circle" style="background:#E1F5EE;color:#085041;">1</div>
+        <div style="font-size:13px;color:#444;">Open <strong>Play Store</strong> (Android) or <strong>App Store</strong> (iPhone)</div>
+      </div>
+      <div class="step-row">
+        <div class="step-circle" style="background:#E1F5EE;color:#085041;">2</div>
+        <div style="font-size:13px;color:#444;">Search: <strong>Google Docs</strong> — it is free, made by Google</div>
+      </div>
+      <div class="step-row">
+        <div class="step-circle" style="background:#E1F5EE;color:#085041;">3</div>
+        <div style="font-size:13px;color:#444;">Sign in with your <strong>Gmail account</strong>. (See storage note below if your account is full.)</div>
+      </div>
+      <div class="tip" style="background:#f0efec;">
+        <div style="font-size:12px;color:#555;"><strong>No app?</strong> Go to <strong>docs.google.com</strong> in your phone browser. Bookmark it. It works exactly the same way.</div>
+      </div>
+    </div>
+
+    <div style="margin:10px 0;border-radius:8px;overflow:hidden;border:1px solid #e8e5de;">
+      <img src="assets/IMG_GOOGLE_PLAY_STORE.jpg" alt="Google Docs app in Play Store" style="width:100%;display:block;">
+    </div>
+    <div style="font-size:11px;color:#777;text-align:center;margin-top:5px;font-style:italic;">Search for "Google Docs" in the Play Store or App Store.</div>
+
+    <div class="storage-warning" style="margin-top:14px;">
+      <div style="font-size:13px;font-weight:700;color:#712B13;margin-bottom:6px;">⚠ Check your storage first</div>
+      <div style="font-size:13px;color:#993C1D;line-height:1.6;">Google gives you 15 GB free. If you have been using your Gmail for years — photos, videos, downloads — it may be full. A full Drive means you <strong>cannot save new documents</strong>.</div>
+      <div style="margin-top:10px;font-size:13px;color:#712B13;font-weight:600;">How to check:</div>
+      <div style="font-size:13px;color:#993C1D;">Open the Google Drive app → tap the menu (☰) → look for "Storage" at the bottom.</div>
+      <div style="margin-top:10px;background:#fff3ee;border-radius:8px;padding:10px 12px;">
+        <div style="font-size:13px;font-weight:700;color:#712B13;margin-bottom:5px;">If your Drive is full — do this:</div>
+        <div style="font-size:13px;color:#993C1D;line-height:1.8;">
+          <div><strong>Step 1.</strong> Create a brand new Gmail account (gmail.com → Create account). Use your initials + a number.</div>
+          <div><strong>Step 2.</strong> Write the email address and password on a piece of paper.</div>
+          <div><strong>Step 3.</strong> Stick that paper somewhere safe at home — fridge, mirror, inside your Bible.</div>
+          <div><strong>Step 4.</strong> Use that account for your SBA only. Share it with Mr. Legall.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── TAB 2: Name & Share ── -->
+<div id="tab2" class="tab-panel tab2">
+  <div class="sec-header">
+    <div class="sec-part">STEP 2 OF 6</div>
+    <div class="sec-title">Name &amp; Share Your File</div>
+  </div>
+  <div class="sec-body">
+
+    <!-- SUBMIT BOX — prominent, amber -->
+    <div class="submit-box">
+      <div class="submit-title">SUBMISSION — THIS IS HOW YOU HAND IN YOUR WORK</div>
+      <div class="submit-sub" style="margin-top:6px;">Submitting your SBA means sharing your Google Doc with your teacher so he always has access to it. There is no "sending" — once shared, the document is always there.</div>
+      <span class="submit-email">legall.ev@gmail.com</span>
+      <div style="font-size:13px;opacity:0.95;margin-top:6px;">Share with that address, set permission to <strong>Editor</strong>, and your SBA is submitted. Do this as early as possible — even before you have written a single word.</div>
+    </div>
+
+    <!-- PAGE NUMBERING NOTICE -->
+    <div style="background:#FAECE7;border:1px solid #f5c4b3;border-radius:10px;padding:14px 16px;margin-bottom:12px;">
+      <div style="font-size:13px;font-weight:800;color:#712B13;margin-bottom:6px;">⚠ NUMBER YOUR PAGES — DO NOT FORGET</div>
+      <div style="font-size:13px;color:#993C1D;line-height:1.6;">CXC requires page numbers. Add them before you start writing — not at the end.<br>
+      <strong>Phone:</strong> Tap the ⋮ menu → Page setup → turn on Page numbers.<br>
+      <strong>Laptop:</strong> Insert menu → Page numbers → select the position.</div>
+    </div>
+
+    <!-- FILENAME -->
+    <div class="card">
+      <div class="card-title">Name your document — exact format</div>
+      <div style="font-size:13px;color:#555;margin-bottom:10px;">Your filename must follow this exact format. CXC uses filenames to track submissions.</div>
+      <div class="name-box">
+        <div class="name-box-label">FORMAT</div>
+        <div class="name-box-value">CandidateNumber_Surname_HSB_SBA_2026</div>
+        <div class="name-box-eg">Example: 100234_Williams_HSB_SBA_2026</div>
+      </div>
+      <div style="font-size:12px;color:#555;line-height:1.6;">
+        <div><span class="check">✓</span>Use underscores, not spaces</div>
+        <div><span class="check">✓</span>Your candidate number comes first</div>
+        <div><span class="check">✓</span>Surname only, not first name</div>
+        <div><span class="cross">✗</span>Do not call it "My SBA" or "HSB 2026 draft"</div>
+      </div>
+    </div>
+
+    <!-- HOW TO CREATE: PHONE vs LAPTOP -->
+    <div class="device-group">
+    <div class="device-tabs">
+      <button class="device-tab active" onclick="showDevice('phone2', this)">📱 Phone</button>
+      <button class="device-tab" onclick="showDevice('laptop2', this)">💻 Laptop</button>
+    </div>
+
+    <div id="tab-phone2" class="device-content active">
+      <div class="card">
+        <div class="card-title">Create your document on your phone</div>
+        <div class="step-row"><div class="step-circle" style="background:#EEEDFE;color:#3C3489;">1</div><div style="font-size:13px;color:#444;">Open Google Docs. Tap the <strong>+ button</strong> at the bottom.</div></div>
+        <div style="margin:10px 0;border-radius:8px;overflow:hidden;border:1px solid #e8e5de;"><img src="assets/IMG_GOOGLE_DOCS_HOME_MOBILE.jpg" alt="Google Docs home screen" style="width:100%;display:block;"></div>
+        <div class="step-row"><div class="step-circle" style="background:#EEEDFE;color:#3C3489;">2</div><div style="font-size:13px;color:#444;">Tap <strong>New document</strong>.</div></div>
+        <div style="margin:10px 0;border-radius:8px;overflow:hidden;border:1px solid #e8e5de;"><img src="assets/IMG_GOOGLE_DOCS_NEW_DOCUMENT.jpg" alt="New document option" style="width:100%;display:block;"></div>
+        <div class="step-row"><div class="step-circle" style="background:#EEEDFE;color:#3C3489;">3</div><div style="font-size:13px;color:#444;">Tap the title area and type your filename in the exact format shown above.</div></div>
+      </div>
+    </div>
+
+    <div id="tab-laptop2" class="device-content">
+      <div class="card">
+        <div class="card-title">Create your document on a laptop</div>
+        <div class="step-row"><div class="step-circle" style="background:#EEEDFE;color:#3C3489;">1</div><div style="font-size:13px;color:#444;">Go to <strong>docs.google.com</strong> and sign in.</div></div>
+        <div class="step-row"><div class="step-circle" style="background:#EEEDFE;color:#3C3489;">2</div><div style="font-size:13px;color:#444;">Click the large <strong>+ Blank</strong> button to create a new document.</div></div>
+        <div class="step-row"><div class="step-circle" style="background:#EEEDFE;color:#3C3489;">3</div><div style="font-size:13px;color:#444;">Click "Untitled document" at the top left and type your filename.</div></div>
+      </div>
+    </div>
+    </div><!-- end device-group -->
+
+    <!-- HOW TO SHARE -->
+    <div class="card" style="margin-top:4px;">
+      <div class="card-title">How to share — submit right now</div>
+      <div class="step-row"><div class="step-circle" style="background:#f0efec;color:#555;font-size:11px;">1</div><div style="font-size:13px;color:#444;">Follow the steps for your device below.</div></div>
+      <div class="step-row"><div class="step-circle" style="background:#f0efec;color:#555;font-size:11px;">2</div><div style="font-size:13px;color:#444;">Type <strong>legall.ev@gmail.com</strong></div></div>
+      <div class="step-row"><div class="step-circle" style="background:#f0efec;color:#555;font-size:11px;">3</div><div style="font-size:13px;color:#444;">Set permission to <strong>Editor</strong> → tap/click <strong>Send</strong></div></div>
+
+      <div class="device-group" style="margin-top:8px;">
+        <div class="device-tabs">
+          <button class="device-tab active" onclick="showDevice('share-phone', this)">📱 Phone</button>
+          <button class="device-tab" onclick="showDevice('share-laptop', this)">💻 Laptop</button>
+        </div>
+
+      <div id="tab-share-phone" class="device-content active">
+        <div style="font-size:13px;color:#444;margin-bottom:10px;padding-top:6px;">Tap <strong>⋮</strong> (top right) → <strong>Share &amp; export</strong> → <strong>Share</strong>.</div>
+        <div style="display:flex;gap:6px;align-items:flex-start;">
+          <div style="flex:1;text-align:center;">
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e5de;"><img src="assets/IMG_GOOGLE_DOCS_SHARE_PHONE_1.jpeg" alt="Tap the menu" style="width:100%;display:block;"></div>
+            <div style="font-size:10px;color:#777;margin-top:4px;">Step 1 — Tap ⋮, tap Share &amp; export</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e5de;"><img src="assets/IMG_GOOGLE_DOCS_SHARE_PHONE_2.jpeg" alt="Share and export" style="width:100%;display:block;"></div>
+            <div style="font-size:10px;color:#777;margin-top:4px;">Step 2 — Tap Share</div>
+          </div>
+          <div style="flex:1;text-align:center;">
+            <div style="border-radius:8px;overflow:hidden;border:1px solid #e8e5de;"><img src="assets/IMG_GOOGLE_DOCS_SHARE_PHONE_3.jpeg" alt="Enter email and send" style="width:100%;display:block;"></div>
+            <div style="font-size:10px;color:#777;margin-top:4px;">Step 3 — Type the email &amp; send</div>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-share-laptop" class="device-content">
+        <div style="font-size:13px;color:#444;margin-bottom:8px;padding-top:6px;">Click the blue <strong>Share</strong> button at the top right of the document.</div>
+        <div style="margin:8px 0;border-radius:8px;overflow:hidden;border:1px solid #e8e5de;"><img src="assets/IMG_GOOGLE_DOCS_SHARE_DESKTOP.jpg" alt="Share screen on laptop" style="width:100%;display:block;"></div>
+      </div>
+
+      </div><!-- end device-group -->
+
+      <div class="tip" style="background:#E1F5EE;border-left:3px solid #1D9E75;margin-top:8px;">
+        <div style="font-size:12px;color:#085041;"><strong>Done.</strong> You do not need to share again after every edit. Changes are visible to your teacher automatically.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── TAB 3: Group → You ── -->
+<div id="tab3" class="tab-panel tab3">
+  <div class="sec-header">
+    <div class="sec-part">STEP 3 OF 6</div>
+    <div class="sec-title">What You Already Have</div>
+  </div>
+  <div class="sec-body">
+
+    <div style="background:#fff3ee;border-radius:10px;padding:14px 16px;margin-bottom:12px;border:1px solid #f5c4b3;">
+      <div style="font-size:15px;font-style:italic;color:#1a1a1a;margin-bottom:6px;line-height:1.5;">"Your group gave you the skeleton. Your job is to put the flesh on it."</div>
+      <div style="font-size:13px;color:#555;">Your group may have a typed document in Google Docs — or your notes may be written down from class. Either way, you have the skeleton. The orange column below is what you write yourself.</div>
+    </div>
+
+    <div class="card" style="padding:0;overflow:hidden;">
+      <table class="cmp-table">
+        <thead>
+          <tr>
+            <th style="background:#E1F5EE;color:#085041;">Can use as-is</th>
+            <th style="background:#EEEDFE;color:#3C3489;">Copy but rewrite</th>
+            <th style="background:#FAECE7;color:#712B13;">Write yourself</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="color:#085041;">Problem Statement</td>
+            <td style="color:#3C3489;">Introduction / Background<br><span style="font-size:11px;font-style:italic;">(must add local stat — see note below)</span></td>
+            <td style="color:#712B13;">Presentation of Data</td>
+          </tr>
+          <tr>
+            <td style="color:#085041;">Aim</td>
+            <td style="color:#3C3489;">Methodology<br><span style="font-size:11px;font-style:italic;">(check language, fix anything off)</span></td>
+            <td style="color:#712B13;">Analysis &amp; Discussion</td>
+          </tr>
+          <tr>
+            <td style="color:#085041;">Methodology</td>
+            <td style="color:#3C3489;">Bibliography<br><span style="font-size:11px;font-style:italic;">(add your own sources if you found more)</span></td>
+            <td style="color:#712B13;">Conclusion</td>
+          </tr>
+          <tr><td></td><td></td><td style="color:#712B13;">Recommendations</td></tr>
+          <tr><td></td><td></td><td style="color:#712B13;">Reflection</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- BACKGROUND / LOCAL STAT -->
+    <div style="background:#E1F5EE;border-left:3px solid #1D9E75;border-radius:0 8px 8px 0;padding:10px 12px;margin:8px 0;">
+      <div style="font-size:12px;font-weight:700;color:#085041;margin-bottom:4px;">YOUR INTRODUCTION — MAKE IT YOURS</div>
+      <div style="font-size:13px;color:#085041;line-height:1.6;">You already know why this topic matters — your group chose it together. So read each paragraph of the group introduction and rewrite it in your own words. Do not just swap a word here and there. Actually read it, look away, and write what you understood.<br><br>
+      Your version must also include at least one fact or statistic specific to Trinidad and Tobago. Look in:<br>
+      <strong>Trinidad Guardian</strong> (guardian.co.tt), <strong>Newsday</strong> (newsday.co.tt), <strong>T&amp;T Ministry of Health</strong> website, or <strong>PAHO/WHO Caribbean reports</strong>.<br><br>
+      Example: <em>"According to the Trinidad and Tobago Ministry of Health (year), [relevant stat]. This is significant because…"</em>
+      </div>
+    </div>
+
+    <div class="warning-box" style="margin-top:4px;">
+      <div style="font-size:12px;font-weight:700;color:#633806;margin-bottom:4px;">IMPORTANT</div>
+      <div style="font-size:13px;color:#854F0B;">Do not just change the name on the group document and submit it. Your charts, your analysis, your reflection — these must be original. And your Introduction must be your own version, not a word-for-word copy. Two marks are not worth the risk.</div>
+    </div>
+
+    <!-- PASSIVE VOICE -->
+    <div class="card" style="margin-top:10px;">
+      <div class="card-title">Writing style: third person passive</div>
+      <p style="font-size:13px;color:#555;margin-bottom:10px;">Academic writing does not use "I". Use the <strong>third person passive</strong>. Here is the difference:</p>
+      <div class="passive-box">
+        <div class="passive-row"><span class="passive-label" style="background:#FAECE7;color:#712B13;">DON'T</span><span style="color:#555;">"I distributed the questionnaires through WhatsApp."</span></div>
+        <div class="passive-row"><span class="passive-label" style="background:#E1F5EE;color:#085041;">DO</span><span style="color:#26215C;">"Questionnaires were distributed through WhatsApp class groups."</span></div>
+        <div style="height:8px;"></div>
+        <div class="passive-row"><span class="passive-label" style="background:#FAECE7;color:#712B13;">DON'T</span><span style="color:#555;">"I found that 65% of students sleep less than 6 hours."</span></div>
+        <div class="passive-row"><span class="passive-label" style="background:#E1F5EE;color:#085041;">DO</span><span style="color:#26215C;">"It was found that 65% of students reported sleeping fewer than 6 hours per night."</span></div>
+        <div style="height:8px;"></div>
+        <div class="passive-row"><span class="passive-label" style="background:#FAECE7;color:#712B13;">DON'T</span><span style="color:#555;">"We chose this sample because it was convenient."</span></div>
+        <div class="passive-row"><span class="passive-label" style="background:#E1F5EE;color:#085041;">DO</span><span style="color:#26215C;">"This sample was selected due to its accessibility within the school."</span></div>
+      </div>
+      <div class="tip" style="background:#EEEDFE;border-left:3px solid #7F77DD;margin-top:8px;">
+        <div style="font-size:12px;color:#3C3489;">Notice the pattern: the action word gets "was" or "were" before it. "Distributed" → "were distributed." "Found" → "was found." "Collected" → "was collected." Try it on any sentence from the group document.</div>
+      </div>
+    </div>
+
+    <!-- COPY TEXT INSTRUCTIONS -->
+    <div class="card" style="margin-top:4px;">
+      <div class="card-title">How to copy text from the group document</div>
+      <div class="step-row"><div class="step-circle" style="background:#f0efec;color:#555;font-size:11px;">1</div><div style="font-size:13px;color:#444;">Open the group document in Google Docs</div></div>
+      <div class="step-row"><div class="step-circle" style="background:#f0efec;color:#555;font-size:11px;">2</div><div style="font-size:13px;color:#444;"><strong>Phone:</strong> Press and hold the text until selection handles appear. Drag to select. Tap <strong>Copy</strong>.</div></div>
+      <div class="step-row"><div class="step-circle" style="background:#f0efec;color:#555;font-size:11px;">3</div><div style="font-size:13px;color:#444;"><strong>Laptop:</strong> Click at the start. Hold <strong>Shift</strong> and click at the end. Press <strong>Ctrl + C</strong>.</div></div>
+      <div class="step-row"><div class="step-circle" style="background:#f0efec;color:#555;font-size:11px;">4</div><div style="font-size:13px;color:#444;">Switch to your own document and paste. Then rewrite as needed.</div></div>
+      <div style="background:#EEEDFE;border-radius:6px;padding:8px 10px;margin-top:8px;font-size:12px;color:#3C3489;"><strong>No typed group document?</strong> Use your class notes. Type the Problem Statement, Aim, and Methodology from what was covered in class.</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ── TAB 4: Build Your SBA ── -->
+<div id="tab4" class="tab-panel tab4">
+  <div class="sec-header">
+    <div class="sec-part">STEP 4 OF 6</div>
+    <div class="sec-title">Build Your SBA</div>
+  </div>
+  <div class="sec-body">
+    <p style="font-size:14px;color:#444;margin-bottom:14px;">Every section goes on its own page. Here is the order, what goes in each section, and how many marks it is worth.</p>
+
+    <!-- COVER PAGE -->
+    <div class="page-card">
+      <div class="page-card-head"><span class="page-badge" style="background:#e8e5de;color:#555;">Page 1</span><span class="page-name">Cover Page</span></div>
+      <div class="page-body">
+        <div style="display:flex;flex-direction:column;gap:3px;font-size:13px;color:#444;font-family:'Courier New',monospace;background:#f9f8f6;border-radius:6px;padding:12px 14px;border:1px solid #e8e5de;line-height:2.2;">
+          <div>NAME:</div>
+          <div>CANDIDATE NUMBER:</div>
+          <div>CENTRE NUMBER:</div>
+          <div>SCHOOL:</div>
+          <div>TOPIC:</div>
+          <div>TITLE:</div>
+          <div>YEAR OF EXAMINATION:</div>
+          <div>TEACHER:</div>
+          <div>OTHER GROUP MEMBERS:</div>
+        </div>
+        <div style="font-size:11px;color:#999;margin-top:6px;font-style:italic;">Left-aligned, each item on its own line. You may add a graphic but keep it small.</div>
+      </div>
+    </div>
+
+    <!-- TOC -->
+    <div class="page-card">
+      <div class="page-card-head"><span class="page-badge" style="background:#e8e5de;color:#555;">Page 2</span><span class="page-name">Table of Contents</span></div>
+      <div class="page-body">All sections listed with page numbers. Write this last, once the rest of the document is done.</div>
+    </div>
+
+    <!-- INTRODUCTION -->
+    <div class="page-card" style="border-left:3px solid #1D9E75;">
+      <div class="page-card-head"><span class="page-badge" style="background:#E1F5EE;color:#085041;">Pages 3–4</span><span class="page-name">Introduction / Background <span class="marks-badge">2 marks</span></span></div>
+      <div class="page-body">2–3 paragraphs. What is the topic? Why does it matter in Trinidad and Tobago? What does research say?</div>
+      <div class="page-note" style="color:#1D9E75;">→ Rewrite from group document. Must include a local T&amp;T statistic.</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          <span>See mark breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>Provides a clear, detailed description of a current health-related or environmental issue</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span style="font-style:italic;color:#555;">(Description detailed but lacking clarity = 1 mark)</span><span class="acc-pts">—</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:10px 0;border-radius:8px;overflow:hidden;border:1px solid #e8e5de;">
+      <img src="assets/IMG_SAMPLE_INTRODUCTION_PAGE.jpg" alt="Sample Introduction page" style="width:100%;display:block;">
+    </div>
+    <div style="font-size:11px;color:#777;text-align:center;margin-top:5px;margin-bottom:14px;font-style:italic;">Your Introduction should look like this — clear heading, 2–3 paragraphs, no bullet points.</div>
+
+    <!-- PROBLEM STATEMENT + AIM (separated, each showing 2 marks) -->
+    <div class="page-card" style="border-left:3px solid #1D9E75;">
+      <div class="page-card-head"><span class="page-badge" style="background:#E1F5EE;color:#085041;">Page 5</span><span class="page-name">Problem Statement &amp; Aim</span></div>
+      <div class="page-body">
+        <!-- PROBLEM STATEMENT block -->
+        <div style="background:#f9f8f6;border-radius:8px;padding:12px 14px;margin-bottom:10px;border:1px solid #e0ddd6;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Problem Statement</div>
+            <span class="marks-badge">2 marks</span>
+          </div>
+          <div style="font-size:13px;color:#555;line-height:1.6;">The research question. It must be stated clearly <strong>and</strong> written as an observation or question.<br>
+          <em>Starts with: "To what extent does…" or "What is the effect of…"</em></div>
+        </div>
+        <!-- AIM block -->
+        <div style="background:#f9f8f6;border-radius:8px;padding:12px 14px;border:1px solid #e0ddd6;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;">
+            <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Aim (Research Objective)</div>
+            <span class="marks-badge">2 marks</span>
+          </div>
+          <div style="font-size:13px;color:#555;line-height:1.6;">Must be linked to the issue <strong>and</strong> be realistic/feasible.<br>
+          <em>Starts with: "The aim of this study was to determine…"</em></div>
+        </div>
+      </div>
+      <div class="page-note" style="color:#1D9E75;margin-top:6px;">→ Copy from group document. These two are marked separately — 2 marks each.</div>
+    </div>
+
+    <!-- METHODOLOGY -->
+    <div class="page-card" style="border-left:3px solid #1D9E75;">
+      <div class="page-card-head"><span class="page-badge" style="background:#E1F5EE;color:#085041;">Page 6</span><span class="page-name">Methodology <span class="marks-badge">8 marks</span></span></div>
+      <div class="page-body">How data was collected. Must include: sample size and description, the questionnaire, how it was distributed, and one limitation of the method.</div>
+      <div class="page-note" style="color:#1D9E75;">→ Copy from group. Check the language (see Step 3 for third person passive).</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          <span>See mark breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>Sample is identified and clearly described</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>Data collection instrument (questionnaire) identified and clearly described</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>Method of data collection identified and clearly described</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>Method of data collection adequately justified</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>ONE limitation of data collection method clearly stated</span><span class="acc-pts">1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PRESENTATION OF DATA -->
+    <div class="page-card" style="border-left:3px solid #D85A30;">
+      <div class="page-card-head"><span class="page-badge" style="background:#FAECE7;color:#712B13;">Pages 7–9</span><span class="page-name">Presentation of Data <span class="marks-badge">5 marks</span></span></div>
+      <div class="page-body">Show 3–4 of your best charts. Must use at least two different chart types (e.g. one bar chart and one pie chart).</div>
+      <div class="page-requirement">
+        <div class="req-label">EVERY CHART MUST HAVE BOTH:</div>
+        <div>Title <strong>ABOVE</strong> the chart → "Figure 1: Age distribution of respondents"</div>
+        <div style="margin-top:4px;">Description <strong>BELOW</strong> the chart → "Figure 1 shows that the majority of respondents were between 15 and 17 years old."</div>
+      </div>
+      <div class="page-note" style="color:#D85A30;">→ You must write this yourself. Pick your 3–4 strongest charts from the Appendix.</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          <span>See mark breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>Data presented in appropriate form (tables, graphs, charts)</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>Data presented in at least TWO different forms</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>Form(s) used are correctly labelled</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>Data presented are accurate</span><span class="acc-pts">1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin:10px 0;border-radius:8px;overflow:hidden;border:1px solid #e8e5de;">
+      <img src="assets/IMG_SAMPLE_CHART_PAGE.jpg" alt="Sample chart page" style="width:100%;display:block;">
+    </div>
+    <div style="background:#FFF8E1;border:1px solid #FFD54F;border-radius:8px;padding:10px 12px;margin-top:4px;margin-bottom:10px;">
+      <div style="font-size:12px;font-weight:700;color:#5D4037;margin-bottom:5px;">📊 TWO THINGS STUDENTS MISS FROM THE MARK SCHEME</div>
+      <div style="font-size:13px;color:#4E342E;line-height:1.6;">
+        <div style="margin-bottom:5px;"><strong>1. You need at least TWO different chart types.</strong> A pie chart and a bar chart count. Two bar charts do not. Check your mark scheme — 2 of the 5 marks go to this point alone.</div>
+        <div><strong>2. A table counts as a chart type.</strong> If you have a neatly labelled table of raw data or summary figures, that satisfies one of the two required forms. It must have a title above it and a description below it, just like any other chart.</div>
+      </div>
+    </div>
+
+    <!-- ANALYSIS -->
+    <div class="page-card" style="border-left:3px solid #D85A30;background:#fffbf9;">
+      <div class="page-card-head"><span class="page-badge" style="background:#FAECE7;color:#712B13;">Pages 10–11</span><span class="page-name">Analysis &amp; Discussion <span class="marks-badge">5 marks</span></span></div>
+      <div class="page-body">Explain what the charts mean using real numbers. Explain <em>why</em> using biology. See Step 5 for the exact formula.</div>
+      <div class="page-note" style="color:#D85A30;">→ You must write this yourself. Step 5 shows you exactly how.</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          <span>See mark breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>Data analysed using appropriate calculations/statistics/themes</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>Data summarised accurately</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>At least TWO statements of findings based on data presented</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>Findings are consistent with analyses</span><span class="acc-pts">1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONCLUSION -->
+    <div class="page-card" style="border-left:3px solid #D85A30;">
+      <div class="page-card-head"><span class="page-badge" style="background:#FAECE7;color:#712B13;">Page 12</span><span class="page-name">Conclusion <span class="marks-badge">2 marks</span></span></div>
+      <div class="page-body">2–3 sentences. What was found overall? Does it match the aim? What is the single most important finding?</div>
+      <div class="page-note" style="color:#D85A30;">→ You must write this yourself.</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          <span>See mark breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>Conclusion succinctly summarises the project</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>Conclusion is logical and based on findings</span><span class="acc-pts">1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDATIONS -->
+    <div class="page-card" style="border-left:3px solid #D85A30;">
+      <div class="page-card-head"><span class="page-badge" style="background:#FAECE7;color:#712B13;">Page 13</span><span class="page-name">Recommendations <span class="marks-badge">4 marks</span></span></div>
+      <div class="page-body">At least two recommendations. They must be realistic and come directly from what your data showed.</div>
+      <div class="page-note" style="color:#D85A30;">→ You must write this yourself. Base them on your actual findings.</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          <span>See mark breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>At least TWO recommendations proposed</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>Recommendations are realistic</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>Recommendations are informed by findings</span><span class="acc-pts">1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REFLECTION -->
+    <div class="page-card" style="border-left:3px solid #D85A30;">
+      <div class="page-card-head"><span class="page-badge" style="background:#FAECE7;color:#712B13;">Page 14</span><span class="page-name">Reflection <span class="marks-badge">6 marks</span></span></div>
+      <div class="page-body">
+        <div style="margin-bottom:6px;">CXC requires ALL five of the following. Address each one clearly:</div>
+        <div style="padding-left:4px;display:flex;flex-direction:column;gap:5px;font-size:13px;">
+          <div>1. Two lessons learnt from doing this study</div>
+          <div>2. One way this learning will be applied personally</div>
+          <div>3. One thing that would be done differently in a future study</div>
+          <div>4. One social impact of the topic on your school or community</div>
+          <div>5. One economic impact of the topic on your school or community</div>
+        </div>
+      </div>
+      <div class="page-note" style="color:#D85A30;">→ You must write this yourself. Be specific — not generic.</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)">
+          <span>See mark breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>TWO lessons learnt after undertaking the project</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>ONE way the lesson could be applied to personal life</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>ONE way the project could be improved</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>ONE social impact AND ONE economic impact if issue not rectified</span><span class="acc-pts">2</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BIBLIOGRAPHY -->
+    <div class="page-card">
+      <div class="page-card-head"><span class="page-badge" style="background:#e8e5de;color:#555;">Page 15</span><span class="page-name">Bibliography</span></div>
+      <div class="page-body">Every source used. Format: Author (Year). <em>Title</em>. URL. (Accessed Month Year).</div>
+    </div>
+
+    <!-- APPENDIX -->
+    <div class="page-card">
+      <div class="page-card-head"><span class="page-badge" style="background:#e8e5de;color:#555;">Last pages</span><span class="page-name">Appendix</span></div>
+      <div class="page-body">Every single chart goes here — all of them, not just the ones in Presentation of Data. Label each one clearly.</div>
+    </div>
+
+    <!-- OVERALL PRESENTATION accordion -->
+    <div style="margin-top:10px;">
+      <div style="font-size:13px;font-weight:700;color:#555;margin-bottom:6px;">Overall Presentation</div>
+      <div class="accordion-wrap">
+        <button class="accordion-btn" onclick="toggleAcc(this)" style="border-radius:8px;">
+          <span>4 marks — see breakdown</span><span class="accordion-arrow">▾</span>
+        </button>
+        <div class="accordion-panel">
+          <div class="acc-row"><span>Layout follows correct format: cover page, table of contents, bibliography and appendices (2 marks; 1 mark if only two elements present)</span><span class="acc-pts">2</span></div>
+          <div class="acc-row"><span>Bibliographic information contains author names, publishers, and dates</span><span class="acc-pts">1</span></div>
+          <div class="acc-row"><span>Consistent correct spelling and grammar throughout</span><span class="acc-pts">1</span></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MARK SCHEME TOTAL -->
+    <div style="margin-top:18px;margin-bottom:6px;">
+      <div style="font-size:13px;font-weight:700;color:#185FA5;margin-bottom:10px;letter-spacing:0.03em;">MARK SCHEME AT A GLANCE — 40 marks total</div>
+      <div class="mark-scheme-card">
+        <div class="mark-row"><span class="mark-section">1. Background / Introduction</span><span class="mark-pts">2</span></div>
+        <div class="mark-row"><span class="mark-section">2. Problem Statement</span><span class="mark-pts">2</span></div>
+        <div class="mark-row"><span class="mark-section">3. Aim (Research Objective)</span><span class="mark-pts">2</span></div>
+        <div class="mark-row"><span class="mark-section">4. Methodology</span><span class="mark-pts">8</span></div>
+        <div class="mark-row"><span class="mark-section">5. Presentation of Data</span><span class="mark-pts">5</span></div>
+        <div class="mark-row"><span class="mark-section">6. Analysis &amp; Interpretation</span><span class="mark-pts">5</span></div>
+        <div class="mark-row"><span class="mark-section">7. Conclusion</span><span class="mark-pts">2</span></div>
+        <div class="mark-row"><span class="mark-section">8. Recommendations</span><span class="mark-pts">4</span></div>
+        <div class="mark-row"><span class="mark-section">9. Reflection</span><span class="mark-pts">6</span></div>
+        <div class="mark-row"><span class="mark-section">10. Overall Presentation</span><span class="mark-pts">4</span></div>
+        <div class="mark-row" style="border-top:2px solid #185FA5;margin-top:4px;padding-top:10px;">
+          <span class="mark-section" style="font-weight:700;color:#0C447C;">TOTAL</span>
+          <span class="mark-pts" style="font-size:18px;color:#0C447C;">40</span>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#555;margin-top:6px;">Methodology carries the most marks (8). Do not rush it. Analysis and Reflection together are worth 11 — nearly a third of your grade.</div>
+    </div>
+
+    <!-- GET CHARTS FROM FORMS -->
+    <div class="card" style="background:#EAF3DE;border:1px solid #C0DD97;margin-top:4px;">
+      <div class="card-title" style="color:#27500A;">How to get all your charts — Google Forms</div>
+      <div style="font-size:13px;color:#444;margin-bottom:10px;">Your questionnaire data is already in Google Forms. Every chart is already made for you.</div>
+      <div class="step-row"><div class="step-circle" style="background:#E1F5EE;color:#085041;">1</div><div style="font-size:13px;color:#444;">Open your Google Form. Click <strong>Responses</strong> at the top.</div></div>
+      <div class="step-row"><div class="step-circle" style="background:#E1F5EE;color:#085041;">2</div><div style="font-size:13px;color:#444;">Scroll through the responses. Each question has a chart below it.</div></div>
+      <div class="step-row"><div class="step-circle" style="background:#E1F5EE;color:#085041;">3</div><div style="font-size:13px;color:#444;">Click the <strong>Copy chart</strong> icon at the top right of each chart.</div></div>
+      <div class="step-row"><div class="step-circle" style="background:#E1F5EE;color:#085041;">4</div><div style="font-size:13px;color:#444;">Open your Google Doc and paste. Repeat for every chart.</div></div>
+      <div style="margin:10px 0;border-radius:8px;overflow:hidden;border:1px solid #e8e5de;"><img src="assets/IMG_GOOGLE_FORMS_RESPONSES.jpg" alt="Google Forms responses tab" style="width:100%;display:block;"></div>
+      <div style="background:#fff;border-radius:6px;padding:8px 10px;margin-top:8px;font-size:12px;color:#555;">Every chart goes in the Appendix. Only your 3–4 chosen ones go in Presentation of Data — but the Appendix must have all of them.</div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── TAB 5: Write Analysis ── -->
+<div id="tab5" class="tab-panel tab5">
+  <div class="sec-header">
+    <div class="sec-part">STEP 5 OF 6</div>
+    <div class="sec-title">Write Your Analysis</div>
+  </div>
+  <div class="sec-body">
+
+    <div style="background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:12px;border:1px solid #e8e5de;">
+      <div style="font-size:14px;font-weight:700;margin-bottom:6px;">What is analysis?</div>
+      <div style="font-size:13px;color:#444;line-height:1.6;">Analysis means looking at each chart and answering two questions: <strong>What does it show?</strong> (give a number) and <strong>Why does that happen?</strong> (explain the biology). That combination — number + explanation — is analysis.</div>
+      <div class="analysis-vs">
+        <div class="av-card" style="background:#E6F1FB;color:#0C447C;">
+          <div style="font-weight:700;font-size:12px;margin-bottom:4px;">ANALYSIS</div>
+          What the data shows. Always use a number.<br><em>"65% said X."</em>
+        </div>
+        <div class="av-card" style="background:#EAF3DE;color:#27500A;">
+          <div style="font-weight:700;font-size:12px;margin-bottom:4px;">DISCUSSION</div>
+          Why it matters and what it means.<br><em>"This suggests that…"</em>
+        </div>
+      </div>
+      <div style="font-size:12px;color:#777;margin-top:8px;">In CSEC HSB, both go in the same section. The 4-step formula below covers both automatically.</div>
+    </div>
+
+    <!-- COLOUR KEY — upfront, before formula -->
+    <div style="background:#fff;border-radius:10px;padding:14px 16px;margin-bottom:12px;border:1px solid #e8e5de;">
+      <div style="font-size:14px;font-weight:700;margin-bottom:10px;">The 4 Steps — what they are and what colour they are in the example</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#378ADD;flex-shrink:0;"></div>
+          <div style="font-size:13px;"><strong>Step 1 — State the number.</strong> Name the figure and give the key percentage or count.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#639922;flex-shrink:0;"></div>
+          <div style="font-size:13px;"><strong>Step 2 — Compare.</strong> Is this number higher or lower for a different group? Compare two groups.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#EF9F27;flex-shrink:0;"></div>
+          <div style="font-size:13px;"><strong>Step 3 — Explain using biology.</strong> Use specific terms: hormones, organs, body systems, named processes. This is the most important step.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#D4537E;flex-shrink:0;"></div>
+          <div style="font-size:13px;"><strong>Step 4 — Connect to the aim.</strong> Does this finding support what the study set out to find? Say so.</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <div style="width:18px;height:18px;border-radius:50%;background:#E24B4A;flex-shrink:0;border:2px dashed #c03030;"></div>
+          <div style="font-size:13px;color:#7f1d1d;"><strong>Red dashed = missing or weak.</strong> In the example tab, these show where a step was skipped.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="font-size:14px;font-weight:700;color:#1a1a1a;margin-bottom:10px;">Use all 4 steps for each chart</div>
+
+    <div class="formula-card">
+      <div class="formula-step-num" style="color:#378ADD;">STEP 1 — State the number <span style="font-size:10px;background:#dbeafe;color:#0C447C;padding:2px 7px;border-radius:10px;margin-left:6px;">BLUE in example</span></div>
+      <div class="formula-title">Name the figure and give the main number</div>
+      <div class="formula-desc">Start by naming the chart (Figure 1, Figure 2…). Give the key percentage or count.</div>
+      <div class="example-box">"According to Figure 1, 72% of respondents reported playing football, making it the most popular sport among the group surveyed."</div>
+    </div>
+
+    <div class="formula-card" style="border-left-color:#639922;">
+      <div class="formula-step-num" style="color:#639922;">STEP 2 — Compare <span style="font-size:10px;background:#dcfce7;color:#166534;padding:2px 7px;border-radius:10px;margin-left:6px;">GREEN in example</span></div>
+      <div class="formula-title">Compare within the data</div>
+      <div class="formula-desc">Is this number higher or lower than another group? Male vs female? Frequent vs infrequent?</div>
+      <div class="example-box">"Of students who played sports 3–4 times per week, 94% agreed that sports improved their academic performance, compared to 86% of those who played less frequently."</div>
+    </div>
+
+    <div class="formula-card" style="border-left-color:#EF9F27;">
+      <div class="formula-step-num" style="color:#EF9F27;">STEP 3 — Explain the biology <span style="font-size:10px;background:#fef9c3;color:#713f12;padding:2px 7px;border-radius:10px;margin-left:6px;">YELLOW in example</span></div>
+      <div class="formula-title">Use specific biology — this is the most important step</div>
+      <div class="formula-desc">Do not say "because of lifestyle." Name hormones, organs, body systems, named processes.</div>
+      <div class="example-box">"This may be explained by the fact that physical activity increases blood flow to the brain and stimulates the release of endorphins, which reduce cortisol levels that would otherwise interfere with concentration and memory."</div>
+    </div>
+
+    <div class="formula-card" style="border-left-color:#D4537E;">
+      <div class="formula-step-num" style="color:#D4537E;">STEP 4 — Connect to the aim <span style="font-size:10px;background:#fce7f3;color:#831843;padding:2px 7px;border-radius:10px;margin-left:6px;">PINK in example</span></div>
+      <div class="formula-title">Link back to the research objective</div>
+      <div class="formula-desc">Does this finding support or challenge what was originally set out to find? What does it mean for the topic?</div>
+      <div class="example-box">"This finding supports the aim of this study, which sought to determine whether sports participation has positive effects on the physical and mental health of secondary school students."</div>
+    </div>
+
+    <!-- IMPORTANT: all data, not just 2 charts -->
+    <div class="formula-card" style="border-left-color:#D4537E;margin-top:4px;">
+      <div class="formula-step-num" style="color:#D4537E;">IMPORTANT — covers ALL your data</div>
+      <div class="formula-title">Your analysis is not just the 2–4 charts in Presentation of Data</div>
+      <div class="formula-desc">This is the most common mistake. The Presentation of Data section shows 3–4 charts. But your Analysis must discuss <strong>all</strong> your findings — including charts that are only in the Appendix. Write at least one paragraph per major theme your data covered.</div>
+      <div style="background:#fce7f3;border-radius:6px;padding:10px 12px;margin-top:8px;">
+        <div style="font-size:12px;font-weight:700;color:#831843;margin-bottom:5px;">HOW TO THINK ABOUT IT</div>
+        <div style="font-size:13px;color:#831843;line-height:1.6;">You collected data on many questions. The reader should understand what all of it found. Write at least one paragraph per major theme — awareness, attitude, behaviour, influencing factors, etc. Use your Appendix charts as evidence throughout.</div>
+      </div>
+    </div>
+
+    <!-- SENTENCE STARTERS -->
+    <div class="card" style="margin-top:12px;">
+      <div class="card-title">Sentence starters</div>
+      <div style="display:flex;flex-direction:column;gap:5px;">
+        <span class="starter-pill">"According to Figure __, __ % of respondents…"</span>
+        <span class="starter-pill">"It was found that the majority of respondents…"</span>
+        <span class="starter-pill">"This was higher / lower among [group] compared to [group]…"</span>
+        <span class="starter-pill">"This may be attributed to the fact that…"</span>
+        <span class="starter-pill">"This finding suggests that…"</span>
+        <span class="starter-pill">"These results are consistent with the research objective because…"</span>
+        <span class="starter-pill">"The data indicates that respondents who… were more likely to…"</span>
+        <span class="starter-pill">"This is significant because it demonstrates that…"</span>
+      </div>
+    </div>
+
+    <!-- DESCRIPTION VS ANALYSIS -->
+    <div class="warning-box" style="margin-top:12px;margin-bottom:20px;">
+      <div style="font-size:12px;font-weight:700;color:#633806;margin-bottom:4px;">Description is not analysis</div>
+      <div style="font-size:13px;color:#854F0B;">
+        <strong>Description:</strong> "The pie chart shows that 91% of respondents agreed that sports improves their mental health." — You just read the chart out loud.<br><br>
+        <strong>Analysis:</strong> "The data indicates that 91% of respondents agreed that sports participation improves mental health. This may be due to the release of endorphins during physical activity, which reduce the perception of stress and promote positive mood. This finding strongly supports the aim of this study."<br><br>
+        See the difference? Description stops after the number. Analysis keeps going.
+      </div>
+    </div>
+
+    <!-- LINK TO TAB 6 -->
+    <div style="margin:4px 0 20px;">
+      <div style="font-size:13px;color:#555;margin-bottom:10px;">Before you write your own analysis, work through a complete real example in Step 6.</div>
+      <button onclick="showTab(6)" style="display:flex;align-items:center;gap:14px;background:#3B6D11;border-radius:12px;padding:16px 18px;border:none;cursor:pointer;width:100%;box-shadow:0 2px 8px rgba(59,109,17,0.25);">
+        <div style="font-size:32px;flex-shrink:0;">📄</div>
+        <div style="text-align:left;">
+          <div style="font-size:15px;font-weight:700;color:#fff;margin-bottom:3px;">Go to Step 6 — See a Real Example</div>
+          <div style="font-size:12px;color:rgba(255,255,255,0.8);">Read a complete student analysis — then use the 4-step formula to write your own.</div>
+        </div>
+        <div style="font-size:20px;color:rgba(255,255,255,0.6);flex-shrink:0;margin-left:auto;">→</div>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- ── TAB 6: Real Example (embedded annotated analysis) ── -->
+<div id="tab6" class="tab-panel tab6">
+  <div class="sec-header">
+    <div class="sec-part">STEP 6 OF 6</div>
+    <div class="sec-title">See a Real Example</div>
+  </div>
+
+  <!-- MODE TOGGLE -->
+  <div class="mode-bar-inner">
+    <button class="mode-btn active" id="ex-btn-read" onclick="setExMode('read')">📖 Read First</button>
+    <button class="mode-btn" id="ex-btn-comments" onclick="setExMode('comments')">🔍 See Comments</button>
+    <button class="mode-btn" id="ex-btn-polished" onclick="setExMode('polished')">✨ Polished Version</button>
+  </div>
+
+  <!-- HOW-TO BOXES (outside mode wrapper so polished box is always reachable) -->
+  <div class="how-to-use" id="ex-how-read">
+    <strong>Step 1 — Read it as a whole piece of writing.</strong> This is what a good analysis section looks like: three full paragraphs, each one covering a different theme. Notice how it reads like an essay — not bullet points, not one sentence per chart. Read it through once before switching to comments.
+  </div>
+  <div class="how-to-use" id="ex-how-comments" style="display:none;">
+    <strong>Step 2 — See what each part is doing.</strong> The colours match the 4 steps from Step 5. Tap any highlighted phrase to see the comment. Red dashed lines show where a step was skipped or could be stronger.
+  </div>
+  <div class="how-to-use" id="ex-how-polished" style="display:none;background:#E6F1FB;border-color:#b3cfe8;color:#0C447C;">
+    <strong>The same three paragraphs — rewritten with all four steps done properly.</strong> Every sentence has a job. Step 1 opens with a number. Step 2 compares groups. Step 3 explains the biology. Step 4 connects back to the aim. Notice how each paragraph ends before moving to a new theme.
+  </div>
+
+  <!-- OUTER WRAPPER FOR MODE SWITCHING -->
+  <div id="ex-outer" class="read-mode-outer">
+
+    <!-- COLOUR KEY (comments mode only) -->
+    <div class="ex-key">
+      <div class="key-item"><div class="key-dot" style="background:#378ADD;"></div>Step 1: Number</div>
+      <div class="key-item"><div class="key-dot" style="background:#639922;"></div>Step 2: Compare</div>
+      <div class="key-item"><div class="key-dot" style="background:#EF9F27;"></div>Step 3: Biology</div>
+      <div class="key-item"><div class="key-dot" style="background:#D4537E;"></div>Step 4: Aim link</div>
+      <div class="key-item"><div class="key-dot" style="background:#E24B4A;border:1px dashed #c03030;"></div>Missing / weaker</div>
+    </div>
+    <div class="tap-hint">Tap any highlighted phrase to see the comment</div>
+
+    <!-- DOCUMENT FRAME -->
+    <div class="doc-frame">
+      <div class="doc-heading">
+        <div class="doc-heading-text">ANALYSIS AND DISCUSSION — ANONYMISED STUDENT WORK · Topic: Sports and wellbeing</div>
+      </div>
+      <div class="doc-body" id="ex-doc-body">
+
+        <div class="ex-section-heading">Analysis and Discussion</div>
+
+        <!-- PARAGRAPH 1 -->
+        <div class="ex-para">
+          <div class="para-label">PARAGRAPH 1 · Sample and sports played</div>
+          <span class="para-section-label">PARAGRAPH 1</span>
+          <span class="ann ann-step1" onclick="exToggle('a1')">Respondents ranged in age from 13 to 20, the majority (almost 70%) aged 16–19.</span> <span class="ann ann-step1" onclick="exToggle('a2')">The respondents were approximately 60% male and 40% female.</span> <span class="ann ann-step1" onclick="exToggle('a3')">According to Figure 1, the top four sports played were Football (72%), Cricket (31%), Track and Field (21%) and Basketball (15%),</span> <span class="ann ann-missing" onclick="exToggle('a3b')">indicating that the majority of students surveyed are actively engaged in sport.</span> <span class="ann ann-step4" onclick="exToggle('a4')">This suggests that sports participation is an integral part of the lifestyle of students at this school, making this sample well-suited to investigate the relationship between sports and wellbeing.</span>
+        </div>
+        <div id="a1" class="ann-panel blue"><div class="ann-label">✦ STEP 1 — NUMBER STATED</div>Good. "Almost 70%" is specific and tells the reader exactly who was surveyed. Always give a percentage — never say "most" or "many" without a number to support it.</div>
+        <div id="a2" class="ann-panel blue"><div class="ann-label">✦ STEP 1 — SAMPLE DESCRIPTION</div>Good. Describing the gender split helps the reader understand who the data represents. This kind of context belongs at the start of the analysis.</div>
+        <div id="a3" class="ann-panel blue"><div class="ann-label">✦ STEP 1 — NUMBER STATED (Figure referenced)</div>Excellent — four sports named with exact percentages, figure referenced correctly. Notice how easy it is to follow because the numbers appear immediately after each sport name.</div>
+        <div id="a3b" class="ann-panel red"><div class="ann-label">✦ COULD BE STRONGER — STEP 3 MISSING</div>This sentence is pure description. A biology explanation should follow here. For example: "Football's dominance may reflect its low equipment cost and team-based structure, which promotes social bonding — a key factor in mental health and community wellbeing."</div>
+        <div id="a4" class="ann-panel pink"><div class="ann-label">✦ STEP 4 — CONNECTED TO AIM</div>Good attempt. The student ties the finding back to why the sample is relevant. This paragraph would be stronger if a Step 3 sentence appeared before this one.</div>
+        <div class="improve-box">
+          <div class="improve-label">⚠ WHAT THIS PARAGRAPH NEEDS</div>
+          It describes the sample well (Step 1) but has no biology explanation (Step 3). After naming the sports, add one sentence explaining why football dominates — low cost, team structure, cultural presence in T&amp;T — using a biological or social lens. Then the Step 4 closing sentence lands with more weight.
+        </div>
+
+        <!-- PARAGRAPH 2 -->
+        <div class="ex-para">
+          <div class="para-label">PARAGRAPH 2 · Mental health and academic performance</div>
+          <span class="para-section-label">PARAGRAPH 2</span>
+          <span class="ann ann-step1" onclick="exToggle('a5')">According to Figure 2, almost all respondents (91%) agreed that sports improves their mental wellbeing, while 89% reported a positive effect on academic performance, 79% on teamwork, and 89% on physical health.</span> <span class="ann ann-step2" onclick="exToggle('a6')">Of students who played sports three to four times per week, 94.1% believed sport helped their school performance. Even students who played less frequently — once to three times per month — showed an 85.7% agreement rate.</span> <span class="ann ann-step3" onclick="exToggle('a7')">This may be explained by the fact that physical activity increases blood flow to the brain and stimulates the release of endorphins, which reduce cortisol levels that would otherwise interfere with concentration and memory formation.</span> <span class="ann ann-missing" onclick="exToggle('a7b')">Both groups agreed that sports is beneficial, but the data suggests that higher frequency of participation leads to greater perceived academic benefit.</span>
+        </div>
+        <div id="a5" class="ann-panel blue"><div class="ann-label">✦ STEP 1 — NUMBERS STATED</div>Very strong. Four findings given with exact percentages in a single sentence. The student names what each percentage refers to — mental wellbeing, academics, teamwork, health. This is exactly the level of precision needed.</div>
+        <div id="a6" class="ann-panel green"><div class="ann-label">✦ STEP 2 — COMPARISON (EXCELLENT)</div>One of the strongest sentences in the analysis. Two groups compared — frequent players vs. infrequent players — with specific percentages for both. The reference to an edge case is smart. This is exactly what CXC examiners look for.</div>
+        <div id="a7" class="ann-panel yellow"><div class="ann-label">✦ STEP 3 — BIOLOGY USED</div>Good biology. "Blood flow to the brain," "endorphins," and "cortisol levels" are all named correctly. To make it even stronger, specify what endorphins do: they bind to opioid receptors and produce feelings of euphoria, reducing anxiety and improving focus.</div>
+        <div id="a7b" class="ann-panel red"><div class="ann-label">✦ COULD BE STRONGER — STEP 4 MISSING</div>This closing sentence is still in Step 2 territory. The paragraph needs a Step 4 sentence connecting the finding to the aim. For example: "These findings are consistent with the aim of this investigation, which sought to determine whether sports participation positively affects the health and academic performance of secondary school students. The data strongly suggests that it does — and that the effect increases with frequency."</div>
+        <div class="improve-box">
+          <div class="improve-label">⚠ WHAT THIS PARAGRAPH NEEDS</div>
+          Steps 1, 2 and 3 are all present and done well. The only missing piece is a proper Step 4 closing sentence connecting the findings back to the aim. Add it and this paragraph is complete.
+        </div>
+
+        <!-- PARAGRAPH 3 -->
+        <div class="ex-para">
+          <div class="para-label">PARAGRAPH 3 · Lifestyle changes and parental influence</div>
+          <span class="para-section-label">PARAGRAPH 3</span>
+          <span class="ann ann-step1" onclick="exToggle('a8')">Figure 3 reveals that almost 60% of students have made personal health changes — such as adjustments to diet and sleep habits — in order to improve their sports performance.</span> <span class="ann ann-missing" onclick="exToggle('a8b')">This shows that participation in sports motivates students to adopt healthier lifestyle behaviours and is therefore an effective strategy for addressing the risk of lifestyle diseases among young people.</span> <span class="ann ann-step2" onclick="exToggle('a10')">Furthermore, students whose parents actively encouraged sports participation were significantly more likely to play frequently: 69.2% of those who were encouraged played every day or three to four times per week. In contrast, the only student whose parents discouraged sport played the least frequently of all respondents.</span> <span class="ann ann-missing" onclick="exToggle('a10b')">This highlights the important role that parental support plays in shaping adolescent health behaviours.</span>
+        </div>
+        <div id="a8" class="ann-panel blue"><div class="ann-label">✦ STEP 1 — NUMBER STATED (Figure referenced)</div>Good. The student named specific health changes (diet and sleep) rather than just saying "health changes." Specificity is what separates description from analysis. The figure reference is correct.</div>
+        <div id="a8b" class="ann-panel red"><div class="ann-label">✦ COULD BE STRONGER — BIG CLAIM NEEDS STEP 3</div>This sentence makes a significant claim — that sports addresses lifestyle disease risk — but provides no biological evidence. It needs a Step 3 sentence: "Diseases such as type 2 diabetes and hypertension — both highly prevalent in Trinidad and Tobago — are directly linked to physical inactivity and poor diet. Regular sports participation reduces adipose tissue, improves insulin sensitivity, and lowers resting blood pressure."</div>
+        <div id="a10" class="ann-panel green"><div class="ann-label">✦ STEP 2 — COMPARISON (EXCELLENT)</div>One of the best sentences in the whole analysis. Two groups compared — encouraging parents vs. discouraging parents — with a specific percentage. The reference to the outlier ("the only student whose parents discouraged sport played the least") is smart analytical thinking.</div>
+        <div id="a10b" class="ann-panel red"><div class="ann-label">✦ COULD BE STRONGER — STEPS 3 AND 4 MISSING</div>The paragraph ends on a Step 2 observation. It needs both Step 3 biology and Step 4 connection to the aim. "Research in developmental psychology indicates that parental encouragement fosters intrinsic motivation — the internal drive to maintain healthy behaviours. This finding is relevant to the aim, as it suggests that interventions targeting parental attitudes may be as important as those targeting students directly."</div>
+        <div class="improve-box">
+          <div class="improve-label">⚠ WHAT THIS PARAGRAPH NEEDS</div>
+          Two problems. First, the lifestyle disease claim needs biological backing — name the diseases (diabetes, hypertension) and the biological mechanism (insulin sensitivity, blood pressure). Second, the paragraph closes on a comparison (Step 2) with no biology (Step 3) and no connection to the aim (Step 4). Always end each paragraph with Steps 3 and 4 before moving on.
+        </div>
+
+      </div><!-- end doc-body -->
+    </div><!-- end doc-frame -->
+
+    <!-- READ CTA (read mode only) -->
+    <div class="read-cta">
+      <div style="font-size:14px;font-weight:700;margin-bottom:5px;">Now that you have read it —</div>
+      <div style="font-size:13px;opacity:0.9;margin-bottom:12px;">Notice: three full paragraphs, each covering a different theme. Each opens with a figure reference and a number. Now switch to comments to see exactly what each sentence is doing.</div>
+      <button onclick="setExMode('comments')" style="background:#fff;color:#3B6D11;border:none;border-radius:8px;padding:10px 18px;font-size:14px;font-weight:700;cursor:pointer;width:100%;">🔍 See Comments →</button>
+    </div>
+
+    <!-- OVERALL SUMMARY (annotate mode only) -->
+    <div class="overall-section">
+      <div class="overall-card">
+        <div class="overall-title">What this analysis does well</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#dcfce7;color:#166534;">✓</div>Uses real percentages throughout — not vague language like "many" or "most"</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#dcfce7;color:#166534;">✓</div>Compares groups (frequency of play, parental encouragement) — this is Step 2 thinking</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#dcfce7;color:#166534;">✓</div>Names specific biology: cortisol, endorphins, blood flow to the brain</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#dcfce7;color:#166534;">✓</div>References figures correctly (Figure 1, Figure 2, Figure 3)</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#dcfce7;color:#166534;">✓</div>Written in full paragraphs — not bullet points, not one sentence per chart</div>
+      </div>
+      <div class="overall-card">
+        <div class="overall-title">What would push this analysis higher</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#fee2e2;color:#7f1d1d;">+</div>Every paragraph should end with Step 4 — a sentence connecting back to the aim</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#fee2e2;color:#7f1d1d;">+</div>Big claims must include the biological mechanism — don't just name the outcome</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#fee2e2;color:#7f1d1d;">+</div>Name specific Caribbean health statistics when making regional claims</div>
+        <div class="strength-row"><div class="tip-badge" style="background:#fee2e2;color:#7f1d1d;">+</div>Use "It was found that…" rather than "This shows that…" — more academic in tone</div>
+      </div>
+    </div>
+
+  </div><!-- end ex-outer -->
+
+  <!-- POLISHED VERSION PANEL (shown as third tab inside ex-outer) -->
+  <div id="ex-polished-panel" style="display:none;">
+    <div style="background:#fff;border-radius:12px;margin:12px 16px 16px;border:1px solid #e8e5de;overflow:hidden;">
+      <div style="background:#f9f8f6;border-bottom:1px solid #e8e5de;padding:10px 16px;">
+        <div style="font-size:12px;font-weight:700;color:#555;letter-spacing:0.06em;">POLISHED VERSION — ANALYSIS AND DISCUSSION</div>
+      </div>
+      <div style="padding:18px 16px;font-size:14px;color:#1a1a1a;line-height:2;">
+        <div style="font-size:15px;font-weight:700;text-transform:uppercase;letter-bottom:2px solid #1a1a1a;padding-bottom:5px;margin-bottom:16px;border-bottom:2px solid #1a1a1a;">Analysis and Discussion</div>
+
+        <div style="margin-bottom:20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.09em;color:#185FA5;margin-bottom:6px;">PARAGRAPH 1 · Sample characteristics and sports played</div>
+          According to Figure 1, respondents ranged in age from 13 to 20, with the majority (almost 70%) falling between the ages of 16 and 19. The sample was approximately 60% male and 40% female. The most popular sports were Football (72%), Cricket (31%), Track and Field (21%), and Basketball (15%). Football's dominance may reflect its accessibility — it requires minimal equipment and is deeply embedded in Caribbean school culture — as well as its team-based structure, which research links to the development of social bonds and a sense of belonging, both of which are established protective factors for mental health. Students who played sports more frequently (three to four times per week) were significantly more likely to report high levels of physical confidence than those who played once a month or less (88% compared to 61%). It was found that students who engaged in sport regularly were more likely to exhibit proactive health behaviours, which is directly relevant to the aim of this investigation — to determine whether sports participation positively affects the health and wellbeing of secondary school students at this school.
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.09em;color:#185FA5;margin-bottom:6px;">PARAGRAPH 2 · Mental health and academic performance</div>
+          According to Figure 2, almost all respondents (91%) agreed that sports participation improves their mental wellbeing, while 89% reported a positive effect on academic performance, 79% on teamwork ability, and 89% on physical health. Of students who played sports three to four times per week, 94.1% believed sport helped their school performance — compared to 85.7% among those who played only once to three times per month. This pattern may be explained by the physiological effects of regular physical activity: exercise stimulates the release of endorphins, which bind to opioid receptors in the brain and reduce the perception of stress, while simultaneously lowering circulating cortisol — a hormone that, at elevated levels, impairs the hippocampus and reduces the capacity for memory formation and sustained concentration. The increase in cerebral blood flow that accompanies aerobic activity further supports cognitive function. These findings are consistent with the research objective, which sought to determine whether regular sports participation has measurable benefits for the academic and mental health outcomes of young people. The data strongly suggests that it does, and that the benefit increases with frequency of participation.
+        </div>
+
+        <div style="margin-bottom:4px;">
+          <div style="font-size:10px;font-weight:700;letter-spacing:0.09em;color:#185FA5;margin-bottom:6px;">PARAGRAPH 3 · Lifestyle behaviours and parental influence</div>
+          According to Figure 3, almost 60% of students reported making deliberate personal health changes — including modifications to diet, sleep patterns, and hydration habits — in order to improve their sports performance. This finding is significant because non-communicable diseases such as type 2 diabetes mellitus and hypertension are among the leading causes of premature death in Trinidad and Tobago, and both are directly linked to physical inactivity, excess adipose tissue, and poor dietary habits. Regular sports participation addresses these risk factors through multiple biological mechanisms: it reduces body fat percentage, improves insulin sensitivity by increasing glucose uptake in skeletal muscle, and lowers resting blood pressure through adaptations in cardiac output and vascular tone. Furthermore, it was found that students whose parents actively encouraged sports participation were significantly more likely to play frequently — 69.2% of those who received parental encouragement played every day or three to four times per week, compared to the one student whose parents discouraged participation, who played the least of all respondents. Research in developmental psychology indicates that parental encouragement fosters intrinsic motivation — the internal drive to sustain healthy behaviours — which is particularly influential during adolescence. These findings suggest that interventions aimed at improving youth health outcomes in this community may need to target parental attitudes alongside student behaviour, and are directly relevant to the aim of this investigation.
+        </div>
+      </div>
+    </div>
+    <div style="background:#3B6D11;color:#fff;padding:18px 16px;text-align:center;margin-bottom:8px;">
+      <div style="font-size:13px;font-weight:600;margin-bottom:3px;">Now write your own</div>
+      <div style="font-size:12px;opacity:0.8;">Number → Compare → Biology → Aim. One paragraph per theme. Repeat.</div>
+    </div>
+  </div>
+
+</div><!-- end tab6 -->
+
+
+<div style="background:#0f6e56;color:#fff;padding:20px 16px;text-align:center;">
+  <div style="font-size:14px;font-weight:600;margin-bottom:4px;">You have everything you need.</div>
+  <div style="font-size:13px;opacity:0.8;margin-bottom:8px;">Create your document. Share it with legall.ev@gmail.com. Build from the group work. Write your analysis one chart at a time.</div>
+  <div style="font-size:12px;opacity:0.6;">Caribbean Union College Secondary School · HSB SBA 2026</div>
+</div>
+
+</div><!-- end #app -->
+
+
+<script>
+  /* ── LANDING / APP TOGGLE ── */
+  function openApp() {
+    document.getElementById('landing').style.display = 'none';
+    document.getElementById('app').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+  function goBack() {
+    document.getElementById('app').style.display = 'none';
+    document.getElementById('landing').style.display = 'block';
+    window.scrollTo(0, 0);
+  }
+
+  /* ── TABS ── */
+  var tabCount = 6;
+  function showTab(n) {
+    for (var i = 1; i <= tabCount; i++) {
+      document.getElementById('tab' + i).classList.remove('active');
+    }
+    document.getElementById('tab' + n).classList.add('active');
+    var btns = document.querySelectorAll('.toc-btn');
+    btns.forEach(function(b, idx) { b.classList.remove('active'); });
+    btns[n - 1].classList.add('active');
+    document.querySelector('.toc').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  /* ── DEVICE TABS ── */
+  function showDevice(type, btn) {
+    var parent = btn.closest('.device-group') || btn.closest('.tab-panel') || document.body;
+    parent.querySelectorAll('.device-tab').forEach(function(t) { t.classList.remove('active'); });
+    parent.querySelectorAll('.device-content').forEach(function(c) { c.classList.remove('active'); });
+    document.getElementById('tab-' + type).classList.add('active');
+    btn.classList.add('active');
+  }
+
+  /* ── ACCORDION ── */
+  function toggleAcc(btn) {
+    var panel = btn.nextElementSibling;
+    var isOpen = panel.classList.contains('open');
+    panel.classList.toggle('open');
+    btn.querySelector('.accordion-arrow').style.transform = isOpen ? '' : 'rotate(180deg)';
+  }
+
+  /* ── EXAMPLE: MODE ── */
+  function setExMode(mode) {
+    var outer = document.getElementById('ex-outer');
+    var docBody = document.getElementById('ex-doc-body');
+    var btnRead = document.getElementById('ex-btn-read');
+    var btnComments = document.getElementById('ex-btn-comments');
+    var btnPolished = document.getElementById('ex-btn-polished');
+    var howRead = document.getElementById('ex-how-read');
+    var howComments = document.getElementById('ex-how-comments');
+    var howPolished = document.getElementById('ex-how-polished');
+    var polishedPanel = document.getElementById('ex-polished-panel');
+
+    document.querySelectorAll('.ann-panel').forEach(function(p) { p.classList.remove('visible'); });
+
+    // Reset all buttons
+    btnRead.classList.remove('active');
+    btnComments.classList.remove('active');
+    btnPolished.classList.remove('active');
+
+    // Hide all how-to boxes
+    howRead.style.display = 'none';
+    howComments.style.display = 'none';
+    howPolished.style.display = 'none';
+
+    // Hide polished panel and show ex-outer by default
+    polishedPanel.style.display = 'none';
+    outer.style.display = 'block';
+
+    if (mode === 'read') {
+      outer.className = 'read-mode-outer';
+      docBody.className = 'doc-body read-mode';
+      btnRead.classList.add('active');
+      howRead.style.display = 'block';
+    } else if (mode === 'comments') {
+      outer.className = 'annotate-mode-outer';
+      docBody.className = 'doc-body annotate-mode';
+      btnComments.classList.add('active');
+      howComments.style.display = 'block';
+    } else if (mode === 'polished') {
+      outer.style.display = 'none';
+      polishedPanel.style.display = 'block';
+      btnPolished.classList.add('active');
+      howPolished.style.display = 'block';
+    }
+  }
+
+  /* ── EXAMPLE: TOGGLE PANELS ── */
+  function exToggle(id) {
+    var panel = document.getElementById(id);
+    var isVisible = panel.classList.contains('visible');
+    document.querySelectorAll('.ann-panel').forEach(function(p) { p.classList.remove('visible'); });
+    if (!isVisible) {
+      panel.classList.add('visible');
+      panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+  }
+</script>
+</body>
+</html>
